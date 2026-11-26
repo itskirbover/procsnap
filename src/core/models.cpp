@@ -69,7 +69,7 @@ std::string current_utc_iso8601() {
 #else
     gmtime_r(&t, &utc_tm);
 #endif
-    char buf[32];
+    char buf[80];
     std::snprintf(buf, sizeof(buf), "%04d-%02d-%02dT%02d:%02d:%02dZ",
                   utc_tm.tm_year + 1900, utc_tm.tm_mon + 1, utc_tm.tm_mday,
                   utc_tm.tm_hour, utc_tm.tm_min, utc_tm.tm_sec);
