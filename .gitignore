@@ -1,0 +1,13 @@
+build/
+cmake-build-*/
+.cache/
+.vscode/
+*.o
+*.obj
+*.exe
+*.out
+*.swp
+.DS_Store
+compile_commands.json
+snapshots/
+*.snap.json
