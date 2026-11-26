@@ -56,6 +56,7 @@ endif()
 add_library(procsnap_engine STATIC
     src/engine/policy.cpp
     src/engine/diff.cpp
+    src/engine/detector.cpp
 )
 target_link_libraries(procsnap_engine PUBLIC procsnap_core)
 if(MSVC)
