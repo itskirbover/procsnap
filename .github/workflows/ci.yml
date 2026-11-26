@@ -1,0 +1,61 @@
+name: CI (Linux & Windows)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Linux (GCC)
+            os: ubuntu-latest
+            cxx: g++
+            build_type: Release
+          - name: Linux (Clang)
+            os: ubuntu-latest
+            cxx: clang++
+            build_type: Release
+          - name: Windows (MSVC)
+            os: windows-latest
+            cxx: ""
+            build_type: Release
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake (Linux)
+        if: runner.os == 'Linux'
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -DCMAKE_CXX_COMPILER=${{ matrix.cxx }}
+
+      - name: Configure CMake (Windows)
+        if: runner.os == 'Windows'
+        run: cmake -B build -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+
+      - name: Build
+        run: cmake --build build --config ${{ matrix.build_type }} --parallel
+
+      - name: Run CTest suite
+        run: ctest --test-dir build -C ${{ matrix.build_type }} --output-on-failure
+
+      - name: CLI smoke test (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          ./build/procsnap --version
+          ./build/procsnap snapshot --no-hash --no-pkg --format json > /tmp/smoke.json
+          test -s /tmp/smoke.json
+
+      - name: CLI smoke test (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          .\build\Release\procsnap.exe --version
+          .\build\Release\procsnap.exe snapshot --no-hash --format json > smoke.json
+          if ((Get-Item smoke.json).Length -le 0) { exit 1 }
