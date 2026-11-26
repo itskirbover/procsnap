@@ -64,3 +64,18 @@ if(MSVC)
 else()
     target_compile_options(procsnap_engine PRIVATE -Wall -Wextra -Wpedantic)
 endif()
+
+add_executable(procsnap
+    src/cli/formatter.cpp
+    src/cli/cli.cpp
+    src/main.cpp
+)
+target_link_libraries(procsnap PRIVATE
+    procsnap_platform
+    procsnap_engine
+)
+if(MSVC)
+    target_compile_options(procsnap PRIVATE /W4 /permissive-)
+else()
+    target_compile_options(procsnap PRIVATE -Wall -Wextra -Wpedantic)
+endif()
