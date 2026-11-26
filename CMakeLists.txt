@@ -32,4 +32,23 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
     target_link_libraries(procsnap_platform PUBLIC procsnap_core)
     target_compile_options(procsnap_platform PRIVATE -Wall -Wextra -Wpedantic)
+elseif(WIN32)
+    add_library(procsnap_platform STATIC
+        src/platform/windows/windows_collector.cpp
+    )
+    target_link_libraries(procsnap_platform PUBLIC
+        procsnap_core
+        iphlpapi
+        ws2_32
+        wintrust
+        crypt32
+        advapi32
+    )
+    if(MSVC)
+        target_compile_options(procsnap_platform PRIVATE /W4 /permissive-)
+    else()
+        target_compile_options(procsnap_platform PRIVATE -Wall -Wextra -Wpedantic)
+    endif()
+else()
+    message(FATAL_ERROR "Unsupported platform: procsnap supports Linux and Windows only.")
 endif()
