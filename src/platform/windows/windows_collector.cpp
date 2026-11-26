@@ -121,7 +121,7 @@ std::string extract_authenticode_signer(const std::wstring& wpath) {
     HCRYPTMSG msg = nullptr;
 
     if (!CryptQueryObject(CERT_QUERY_OBJECT_FILE, wpath.c_str(),
-                          CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBEDDED,
+                          CERT_QUERY_CONTENT_FLAG_PKCS7_SIGNED_EMBED,
                           CERT_QUERY_FORMAT_FLAG_BINARY, 0, &encoding, &content_type,
                           &format_type, &store, &msg, nullptr)) {
         return {};
