@@ -79,3 +79,20 @@ if(MSVC)
 else()
     target_compile_options(procsnap PRIVATE -Wall -Wextra -Wpedantic)
 endif()
+
+include(CTest)
+if(BUILD_TESTING)
+    add_executable(procsnap_tests
+        tests/test_procsnap.cpp
+    )
+    target_link_libraries(procsnap_tests PRIVATE
+        procsnap_platform
+        procsnap_engine
+    )
+    if(MSVC)
+        target_compile_options(procsnap_tests PRIVATE /W4 /permissive-)
+    else()
+        target_compile_options(procsnap_tests PRIVATE -Wall -Wextra -Wpedantic)
+    endif()
+    add_test(NAME procsnap_tests COMMAND procsnap_tests)
+endif()
