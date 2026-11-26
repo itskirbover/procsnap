@@ -25,3 +25,11 @@ if(MSVC)
 else()
     target_compile_options(procsnap_core PRIVATE -Wall -Wextra -Wpedantic)
 endif()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    add_library(procsnap_platform STATIC
+        src/platform/linux/linux_collector.cpp
+    )
+    target_link_libraries(procsnap_platform PUBLIC procsnap_core)
+    target_compile_options(procsnap_platform PRIVATE -Wall -Wextra -Wpedantic)
+endif()
