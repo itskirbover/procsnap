@@ -52,3 +52,14 @@ elseif(WIN32)
 else()
     message(FATAL_ERROR "Unsupported platform: procsnap supports Linux and Windows only.")
 endif()
+
+add_library(procsnap_engine STATIC
+    src/engine/policy.cpp
+    src/engine/diff.cpp
+)
+target_link_libraries(procsnap_engine PUBLIC procsnap_core)
+if(MSVC)
+    target_compile_options(procsnap_engine PRIVATE /W4 /permissive-)
+else()
+    target_compile_options(procsnap_engine PRIVATE -Wall -Wextra -Wpedantic)
+endif()
