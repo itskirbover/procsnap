@@ -1,0 +1,35 @@
+{
+  "default_deny_outbound": false,
+  "alert_on_unsigned": true,
+  "trusted_hashes": [
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  ],
+  "blocked_hashes": [],
+  "trusted_paths": [
+    "/usr/local/bin/approved-agent"
+  ],
+  "allowed_outbound_cidrs": [
+    "10.0.0.0/8",
+    "172.16.0.0/12",
+    "192.168.0.0/16"
+  ],
+  "denied_outbound_cidrs": [
+    "198.51.100.0/24"
+  ],
+  "allowed_outbound_ports": [
+    53,
+    123,
+    443
+  ],
+  "denied_outbound_ports": [
+    4444,
+    31337
+  ],
+  "process_rules": [
+    {
+      "process_name": "curl",
+      "allowed_cidrs": ["1.1.1.1/32"],
+      "allowed_ports": [443]
+    }
+  ]
+}
